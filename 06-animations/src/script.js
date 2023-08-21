@@ -6,11 +6,25 @@ const canvas = document.querySelector("canvas.webgl");
 // Scene
 const scene = new THREE.Scene();
 
-// Object
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
+const group = new THREE.Group();
+// Object 1
+const mesh = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial({ color: 0xff0000 })
+);
+mesh.position.x = 1;
+group.add(mesh);
+
+// Object 2
+const mesh2 = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+);
+mesh2.position.x = -1;
+
+group.add(mesh2);
+
+scene.add(group);
 
 // Sizes
 const sizes = {
@@ -34,15 +48,12 @@ const tick = () => {
   const elapsedTime = clock.getElapsedTime();
   // Update objects
   mesh.rotation.y = elapsedTime * 3;
-
-  const cubeColor = mesh.material.color;
-
-  //   const darkenedColor = hsl.l - 0.001;
-
-  //   mesh.material.color.setHSL(hsl.h, hsl.s, darkenedColor);
-
-  mesh.position.x = Math.cos(elapsedTime);
+  mesh.rotation.x = elapsedTime * 3;
   mesh.position.y = Math.sin(elapsedTime);
+
+  mesh2.rotation.y = -(elapsedTime * 3);
+  mesh2.rotation.x = -(elapsedTime * 3);
+  mesh2.position.y = Math.cos(elapsedTime);
 
   renderer.render(scene, camera);
 
